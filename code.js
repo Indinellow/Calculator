@@ -2,20 +2,23 @@ function roundToX(num,places){
     return +(Math.round(num+`e+${places}`) + `e-${places}`);
 }
 
+function roundResult(number) {
+    return Math.round(number * 1000) / 1000
+  }
 
 function addition(a,b){
     let c=a+b;
-    return roundToX(c,10);
+    return c;
 }
 
 function subtraction(a,b){
     let c = a-b;
-    return roundToX(c,10);
+    return c;
 }
 
 function multiplication(a,b){
     let c = a*b;
-    return roundToX(c,10);
+    return c;
 }
 
 function division(a,b){
@@ -23,7 +26,7 @@ function division(a,b){
         return 'We dont want to crash the universe!'
     }
     let c = a/b;
-    return roundToX(c,10);
+    return c;
 }
 
 function operate(operator,a,b){
@@ -37,7 +40,7 @@ function operate(operator,a,b){
         case 'division':
             return division(a,b);
         default:
-            return 'that is not a valid operation'
+            return 'Nonvalid input!'
     }
 }
 
@@ -53,14 +56,17 @@ function callOperate(){
     if(firstNumberString=='' && temporaryResult!=''){
          firstNumberString = temporaryResult;
        }
+    if(secondNumberString!=''&& operatorString!=''){
+        let firstNumber=parseFloat(firstNumberString);   
+        let secondNumber=parseFloat(secondNumberString);
+        result.textContent = `${operate(operatorString, firstNumber,secondNumber)}`;
+        input.textContent=`${firstNumberString} ${operatorSymbol} ${secondNumberString} =`;
 
-    let firstNumber=parseFloat(firstNumberString);   
-    let secondNumber=parseFloat(secondNumberString);
-    result.textContent = `${operate(operatorString, firstNumber,secondNumber)}`;
-    input.textContent=`${firstNumberString} ${operatorSymbol} ${secondNumberString} =`;
-
-    return operate(operatorString, firstNumber,secondNumber);
-
+        return operate(operatorString, firstNumber,secondNumber);
+    }
+    else{
+        return 'missing';
+    }
 }
 
 
@@ -68,30 +74,34 @@ function callOperate(){
 
 function concatenateToNumber(number){
     if(operatorString==''){
-        if(firstNumberString=='' && number=='.'){
-            firstNumberString='0.';}
-        else{
-            if(firstNumberString=='0' && number!='.'){
-                firstNumberString=number;
-            }
+        if(firstNumberString.length<=15){
+            if(firstNumberString=='' && number=='.'){
+                firstNumberString='0.';}
             else{
-                firstNumberString+=number;
+                if(firstNumberString=='0' && number!='.'){
+                    firstNumberString=number;
+                }
+                else{
+                    firstNumberString+=number;
+                }
             }
         }
     }
     else{
-        if(secondNumberString=='' && number=='.'){
-            secondNumberString='0.'}
-        else{
-            if (secondNumberString=='0' && number!='.'){
-                secondNumberString=number;
-            }
+        if(secondNumberString.length<=15){
+            if(secondNumberString=='' && number=='.'){
+                secondNumberString='0.'}
             else{
-                secondNumberString+=number;
+                if (secondNumberString=='0' && number!='.'){
+                    secondNumberString=number;
+                }
+                else{
+                    secondNumberString+=number;
+                }
             }
         }
     }
-    if(firstNumberString.length>=10 || secondNumberString.length>=10){
+    if(firstNumberString.length>=15 || secondNumberString.length>=15){
         result.textContent=`Can't handle these numbers`
     }
     else{
@@ -103,38 +113,41 @@ function concatenateToNumber(number){
 function swapStringToSymbol(string)
 {switch (string) {
     case 'multiplication':
-        operatorSymbol='x';
+        operatorSymbol='×';
         break;
     case 'addition':
         operatorSymbol='+';
         break;
     case 'subtraction':
-        operatorSymbol='-';
+        operatorSymbol='−';
         break;
     case 'division':
-        operatorSymbol='/';
+        operatorSymbol='÷';
         break;
 }
 }
 
 function setOperator(string){
-    if (operatorString==''){
-        if(firstNumberString=='' && temporaryResult!=''){
-            firstNumberString = temporaryResult;
-          }
-        operatorString=string;
-        swapStringToSymbol(string);
-        input.textContent=`${firstNumberString} ${operatorSymbol} ${secondNumberString}`;
-        result.textContent='';
-    }
-    else{
-       let outcome = callOperate();
-       firstNumberString=`${outcome}`;
-       operatorString=string;
-       swapStringToSymbol(string);
-       secondNumberString='';
-       input.textContent=`${firstNumberString} ${operatorSymbol} ${secondNumberString}`;
-
+    if(firstNumberString.length<=15 && secondNumberString.length<=15){
+        if (operatorString==''){
+            if(firstNumberString=='' && temporaryResult!=''){
+                firstNumberString = temporaryResult;
+            }
+            operatorString=string;
+            swapStringToSymbol(string);
+            input.textContent=`${firstNumberString} ${operatorSymbol} ${secondNumberString}`;
+            result.textContent='';
+        }
+        else{
+            if(secondNumberString!=''){
+                let outcome = callOperate();
+                firstNumberString=`${outcome}`;
+                operatorString=string;
+                swapStringToSymbol(string);
+                secondNumberString='';
+                input.textContent=`${firstNumberString} ${operatorSymbol} ${secondNumberString}`;
+                }
+        }
     }
 
 }
@@ -180,8 +193,10 @@ function checKeyAndExecute(string){
         setOperator('division');
     }
     else if(string=='Enter'){    
-        temporaryResult= callOperate();
-        resetEverything();   
+        temporaryResult= `${callOperate()}`;
+        if(temporaryResult!='missing'){
+            resetEverything();}
+           
     }
     else if(string=='Backspace'){
         undoFunction();
@@ -212,6 +227,11 @@ function plusMinusSign(){
 
 }
 
+function removeTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    e.target.classList.remove('clicked');
+  }
+
 let firstNumberString='';
 let secondNumberString='';
 let operatorString='';
@@ -227,10 +247,10 @@ const result=document.querySelector('.result');
 
 const equal=document.querySelector('#equal');
 equal.addEventListener('click',()=>{
-    temporaryResult= callOperate();
-    resetEverything();
-
-});
+    temporaryResult= `${callOperate()}`;
+    if(temporaryResult!='missing'){
+        resetEverything();}
+    });
 
 const number0 = document.querySelector('#number-0');
 const number1 = document.querySelector('#number-1');
@@ -285,4 +305,18 @@ decimal.addEventListener('click',addDecimal);
 window.addEventListener('keydown',function(e){
     e.preventDefault();
     checKeyAndExecute(e.key);
+    const oneButton = document.querySelector(`button[data-key="${e.key}"]`);
+    if(oneButton!=null)
+    {oneButton.classList.add('clicked');}
+})
+
+const plusMinusSignButton = document.querySelector('#plusMinusSign');
+plusMinusSignButton.addEventListener('click',plusMinusSign);
+
+const buttons=Array.from(document.querySelectorAll('button'));
+buttons.forEach(oneButton=>{
+    oneButton.addEventListener('click',()=>{
+        oneButton.classList.add('clicked')
+    })
+    oneButton.addEventListener('transitionend',removeTransition);
 })
