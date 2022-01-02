@@ -1,0 +1,161 @@
+body{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mainContainer{
+    display:flex;
+    gap:8px;
+    background-color: rgba(19, 19, 19, 0.801);
+    flex-direction: column;
+    margin:32px;
+    border-radius: 5%;
+    
+}
+
+.display{
+    display:flex;
+    flex-direction: column;
+    background-color: tomato;
+    border-radius:5%;
+    margin:1rem;
+    padding:16px 8px;
+    text-align: end;
+    color:white;
+    width: 200px;
+    height: 70px;
+    font-weight: 550;
+}
+
+.input{
+    padding:6px 0px;
+}
+
+.result{
+    padding:6px 0px;
+    font-weight: bold;
+}
+.numbersAndOperators{
+    display:grid;
+    grid-template-rows: repeat(5 1fr,[row-start]);
+    grid-template-columns: repeat(4 1fr, [col-start]);
+    gap: 8px;
+    margin:8px;
+}
+
+
+button{
+    margin:0;
+    padding: 1rem;
+    border-radius: 25%;
+    background-color: rgba(102, 100, 100, 0.623);
+    color:white;
+    font-weight: bold;
+    width:50px;
+    height: 50;
+    text-align: center;
+    /*border: 0px solid transparent; */
+    
+}
+
+.operators{
+    background-color: tomato;
+}
+
+#plusMinusSign{
+    grid-row: 1;
+    grid-column: 1;
+}
+
+#allClear{
+    grid-row: 1;
+    grid-column: 2;
+    /* border-radius: 2.5rem; */
+}
+
+#undo{
+    grid-row: 1;
+    grid-column: 3 ;
+    /* border-radius: 2.5rem; */
+}
+
+#number-7{
+    grid-row:2;
+    grid-column: 1;
+}
+
+#number-8{
+    grid-row:2;
+    grid-column: 2;
+}
+
+#number-9{
+    grid-row:2;
+    grid-column:3;
+}
+
+#division{
+    grid-row: 2;
+    grid-column: 4;
+}
+
+#number-4{
+    grid-row: 3;
+    grid-column: 1;
+}
+
+#number-5{
+    grid-row: 3;
+    grid-column: 2;
+}
+
+#number-6{
+    grid-row: 3;
+    grid-column: 3;
+}
+
+#multiplication{
+    grid-row: 3;
+    grid-column: 4;
+}
+
+#number-1{
+    grid-row: 4;
+    grid-column: 1;
+}
+
+#number-2{
+    grid-row: 4;
+    grid-column: 2;
+}
+
+#number-3{
+    grid-row: 4;
+    grid-column: 3;
+}
+
+#subtraction{
+    grid-row: 4;
+    grid-column: 4;
+}
+
+#number-0{
+    grid-row: 5;
+    grid-column: 1;
+}
+
+#decimal{
+    grid-row: 5;
+    grid-column: 2;
+}
+
+#equal{
+    grid-row: 5;
+    grid-column: 3;
+}
+
+#addition{
+    grid-row: 5;
+    grid-column: 4;
+}
